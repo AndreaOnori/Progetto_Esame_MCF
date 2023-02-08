@@ -138,20 +138,44 @@ for i in range(len(raggi1)):
             pixels[j].hit= True
             pixels[j].nhit=pixels[j].nhit+1
 
-for i in range(len(pixels)):
+bins1=[]
+sommeperbins=np.zeros(len(m))
+for i in range(len(pixels)-1):
+    if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].hit==True):
+        bins1.append(pixels[i].nhit+pixels[i+1].nhit)
     print(pixels[i].appartenenza, pixels[i].nhit, pixels[i].hit)
+print(bins1)
+
+for i in range(len(pixels)):
+    pixels[i].nhit=0
+    pixels[i].hit= False
 
 
+probgen2=np.zeros(len(m))
+probgen2[196]=0.0015
+probgen2[198]=0.0985
+probgen2[199]=0.169
+probgen2[200]=0.231
+probgen2[201]=0.132
+probgen2[202]=0.299
+probgen2[204]=0.069
+mtest2=np.random.choice(m,10000,p=probgen2)
+partenze2=np.random.uniform(-A2/2,A2/2,len(mtest2))
+raggi2=np.zeros(len(mtest2))
+for i in range(len(mtest2)):
+    raggi2[i]=raggio(mtest2[i],vmin[mediasindex],bmin[mediasindex])+partenze2[i]
+for i in range(len(raggi2)):
+    for j in range(len(pixels)):
+        if ((raggi2[i]<=pixels[j].fine)&(raggi2[i]>pixels[j].inizio)):
+            pixels[j].hit= True
+            pixels[j].nhit=pixels[j].nhit+1
 
-
-
-    
-    
-        
-    
-    
-
-
-
+bins2=[]
+sommeperbins=np.zeros(len(m))
+for i in range(len(pixels)-1):
+    if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].hit==True):
+        bins2.append(pixels[i].nhit+pixels[i+1].nhit)
+    print(pixels[i].appartenenza, pixels[i].nhit, pixels[i].hit)
+print(bins2)
 
 
