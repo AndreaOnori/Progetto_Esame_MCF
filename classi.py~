@@ -1,0 +1,22 @@
+import numpy as np
+
+class Pixel():
+
+    def __init__(self,pos,pix,numeropixel):
+        self.posizione= pos
+        self.inizio=pos*pix-pix
+        self.fine=pos*pix
+        self.appartenenza= numeropixel
+
+
+class Spettrometro():
+
+    def __init__(self,v,b,A2,pix,numeropixel):
+        self.v=v
+        self.b=b
+        self.A2=A2
+        self.pix=pix
+        self.mxpix=np.zeros(numeropixel)
+        self.contahit=np.zeros(numeropixel)
+
+
