@@ -184,8 +184,9 @@ bins1=[]
 for i in range(len(pixels)-1):
     if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].appartenenza!=-1):
         bins1.append(pixels[i].nhit+pixels[i+1].nhit)
+#Grafico NaCl
 plt.plot(m/uma,bins1,'*',color='orange')
-plt.xlabel('m [uma]')
+plt.xlabel('Masse [uma]')
 plt.ylabel('numero di hit')
 plt.title('Risultati del test con NaCl')
 plt.show()
@@ -222,13 +223,15 @@ bins2=[]
 for i in range(len(pixels)-1):
     if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].appartenenza!=-1):
         bins2.append(pixels[i].nhit+pixels[i+1].nhit)
-
+#Grafico Hg
 plt.plot(m/uma,bins2,'*',color='limegreen')
-plt.xlabel('m [uma]')
+plt.xlabel('Masse [uma]')
 plt.ylabel('numero di hit')
 plt.title('Risultati del test con gli isotopi di Hg')
 plt.show()
 
+
+#Righe di codice necessarie per la scrittura su file in maniera più ordinata
 abbis23=bins1[22]
 abbis35=bins1[34]
 abbis37=bins1[36]
@@ -241,7 +244,6 @@ abbis201=bins2[200]
 abbis202=bins2[201]
 abbis204=bins2[203]
 
-print(abbis23,abbis35,abbis37,abbis196,abbis198,abbis199,abbis200,abbis201,abbis202,abbis204)
 
 file_scrittura=open("Risultati.txt","w")
 l1="Il file presenta i risultati dei test con i valori ottimizzati e le abbondanze isotopiche relative ai due casi da analizzare, i dati sono riportati in percentuale."
