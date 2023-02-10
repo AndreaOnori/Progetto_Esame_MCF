@@ -11,6 +11,7 @@ Chiudere la finestra del grafico e permettere al computer di procedere.
 Dovrebbero comparire 3 coppie di grafici (finita l'analisi di una coppia chiudere la finestra per permettere al programma di progredire) rappresentanti variazioni attorno a V e B ottimizzati. Il grafico a sinistra mostra i pixel colpiti, di fatto anche quelli che non corrispondono ad alcuna massa, e il numero di volte che sono stati colpiti, mentre il grafico di destra corrisponde ai soli colpi sui pixel collegati alle masse.
 
 Una volta chiuse le finestre delle 3 coppie di grafici lasciare progredire il programma fino a che non verrà proposto il penultimo grafico, ovvero quello relativo alla risposta simulata dello strumento per gli isotopi di NaCl, chiuso anche questo grafico permettere al programma di elaborare l'ultimo grafico inerente alla risposta simulata dello strumento per gli isotopi del mercurio (Hg).
+Si sono testate 1000 masse casuali per l'NaCl visto che le percentuali teoriche non andavano nei millesimi di percentuale, mentre per l'Hg si sono testate 10000 masse vista la necessità di maggiore precisione
 
 
 Infine a conclusione del programma si dovrebbe ottenere un file di testo chiamato "Risultati.txt" che riporta le abbondanze isotopiche degli elementi testati, avendole estratte dai dati raccolti.

@@ -96,7 +96,7 @@ for i in range(len(pixels)-1):
 
 #Grafico che mostra l'efficienza dello script mostrando che ogni hit viene registrato una volta per massa 
 plt.plot(m/uma,bins0,'o',color='crimson')
-plt.xlabel('Masse')
+plt.xlabel('Masse [uma]')
 plt.ylabel('Numero di hit')
 plt.title('Verifica che tutte le masse abbiano un hit')
 plt.show()
@@ -149,7 +149,7 @@ for k in range(len(vminmod)):
     ax[0].set_xlabel('Pixel')
     ax[0].set_ylabel('Numero di hit')
 
-    ax[1].set_xlabel('Masse')
+    ax[1].set_xlabel('Masse [uma]')
     ax[1].set_ylabel('Numero di hit')
     
     plt.show()
@@ -185,6 +185,9 @@ for i in range(len(pixels)-1):
     if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].appartenenza!=-1):
         bins1.append(pixels[i].nhit+pixels[i+1].nhit)
 plt.plot(m/uma,bins1,'*',color='orange')
+plt.xlabel('m [uma]')
+plt.ylabel('numero di hit')
+plt.title('Risultati del test con NaCl')
 plt.show()
 
 #reset della conta del numero degli "hit" e della variabile "hit" che verifica, come spiegato nell'altro file, se un pixel viene colpito o meno 
@@ -221,6 +224,9 @@ for i in range(len(pixels)-1):
         bins2.append(pixels[i].nhit+pixels[i+1].nhit)
 
 plt.plot(m/uma,bins2,'*',color='limegreen')
+plt.xlabel('m [uma]')
+plt.ylabel('numero di hit')
+plt.title('Risultati del test con gli isotopi di Hg')
 plt.show()
 
 abbis23=bins1[22]
@@ -238,6 +244,18 @@ abbis204=bins2[203]
 print(abbis23,abbis35,abbis37,abbis196,abbis198,abbis199,abbis200,abbis201,abbis202,abbis204)
 
 file_scrittura=open("Risultati.txt","w")
-
-file_scrittura.write()
+l1="Il file presenta i risultati dei test con i valori ottimizzati e le abbondanze isotopiche relative ai due casi da analizzare, i dati sono riportati in percentuale."
+l2="Abbondanze isotopiche NaCl:"
+l3="Na23:"
+l4="Cl35:"
+l5="Cl37:"
+l6="Abbondanze isotopiche Hg:"
+l7="Hg196:"
+l8="Hg198:"
+l9="Hg199:"
+l10="Hg200:"
+l11="Hg201:"
+l12="Hg202:"
+l13="Hg204:"
+file_scrittura.writelines([l1,"\n",l2,"\n",l3,"\n",str(abbis23/10),"\n",l4,"\n",str(abbis35/10),"\n",l5,"\n",str(abbis37/10),"\n",l6,"\n",l7,"\n",str(abbis196/100),"\n",l8,"\n",str(abbis198/100),"\n",l9,"\n",str(abbis199/100),"\n",l10,"\n",str(abbis200/100),"\n",l11,"\n",str(abbis201/100),"\n",l12,"\n",str(abbis202/100),"\n",l13,"\n",str(abbis204/100),"\n"])
 file_scrittura.close()
