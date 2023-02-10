@@ -23,7 +23,7 @@ vmin=np.empty(0)
 bmin=np.empty(0)
 radiuses=np.zeros(210)
 spaces=np.empty(0)
-h2=np.zeros(210)
+
 
 #individuazione dei campi elettrici e magnetici utilizzabili per far funzionare l'apparecchio 
 for i in range(1000000):
@@ -63,12 +63,6 @@ for i in range(len(medias)):
         minmedias=medias[i]
         mediasindex=i
 
-
-plt.plot(raggi[:,mediasindex],h2,'o',color='crimson')
-plt.plot(raggi[:,mediasindex]+pix/2,h2,'*',color='blue')
-plt.plot(raggi[:,mediasindex]-pix/2,h2,'*',color='orange')
-plt.show()
-
 #definizione del numero di pixel necessari a raccogliere le informazioni relative al rilevatore mediante l'ausilio della classe "Pixel" Presente nel file "classi.py"
 
 spaziotot=raggi[209][mediasindex]+pix
@@ -85,13 +79,11 @@ for i in range(len(m)):
             pixels[j].appartenenza=i+1
 
     
-
+#porzione di codice che permette la verifica mediante un solo hit da parte di tutte le masse dalla partenza casuale, di verificare che tutti i colpi vengano registrati e sommati correttamente
 partenze0=np.random.uniform(-A2/2,A2/2,len(m))
-#partenze0=np.ones(len(m))*(-A2/2)
 raggi0=np.zeros(len(m))
 for i in range(len(m)):
     raggi0[i]=raggio(m[i],vmin[mediasindex],bmin[mediasindex])+partenze0[i]
-    print(raggi0[i])
 for i in range(len(raggi0)):
     for j in range(len(pixels)):
         if ((raggi0[i]<=pixels[j].fine)&(raggi0[i]>pixels[j].inizio)):
@@ -101,17 +93,73 @@ bins0=[]
 for i in range(len(pixels)-1):
     if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].appartenenza!=-1):
         bins0.append(pixels[i].nhit+pixels[i+1].nhit)
-print(bins0)
-print(len(m),len(bins0))
-#for i in range(len(pixels)):
- #   print(pixels[i].appartenenza, pixels[i].nhit, pixels[i].hit)
-plt.plot(m/uma,bins0,'o')
+
+#Grafico che mostra l'efficienza dello script mostrando che ogni hit viene registrato una volta per massa 
+plt.plot(m/uma,bins0,'o',color='crimson')
+plt.xlabel('Masse')
+plt.ylabel('Numero di hit')
+plt.title('Verifica che tutte le masse abbiano un hit')
 plt.show()
+
 #reset della conta del numero degli "hit" e della variabile "hit" che verifica, come spiegato nell'altro file, se un pixel viene colpito o meno 
            
 for i in range(len(pixels)):
     pixels[i].nhit=0
     pixels[i].hit= False
+
+
+#generazione degli array di masse con probabilità definite per fare i test al variare dei valori ottimizzati 
+
+probgen=np.zeros(len(m))
+probgen[99]=0.5
+probgen[101]=0.5
+mtest05=np.random.choice(m,1000,p=probgen)
+partenze05=np.random.uniform(-A2/2,A2/2,len(mtest05))
+raggi05=np.zeros(len(mtest05))
+vminmod=np.ones(3)*vmin[mediasindex]
+bminmod=np.ones(3)*bmin[mediasindex]
+appoggio=np.arange(len(pixels))+1
+
+for k in range(len(vminmod)):
+    bins05=np.zeros(len(pixels))     
+    bins051=[]
+    vminmod[k]=vminmod[k]+(k+2)     #spostamento del voltaggio attorno al valore ottimizzato
+    bminmod[k]=bminmod[k]+(k+1)*0.2 #spostamento del campo magntico attorno al valore ottimizzato 
+    for i in range(len(mtest05)):
+        raggi05[i]=raggio(mtest05[i],vminmod[k],bminmod[k])+partenze05[i]
+    for n in range(len(raggi05)):
+        for j in range(len(pixels)):
+            if ((raggi05[n]<=pixels[j].fine)&(raggi05[n]>pixels[j].inizio)):
+                pixels[j].hit= True
+                pixels[j].nhit=pixels[j].nhit+1
+    for n in range(len(pixels)-1):
+            bins05[n]=pixels[n].nhit
+    for l in range(len(pixels)-1):
+        if (pixels[l].appartenenza==pixels[l+1].appartenenza)&(pixels[l].appartenenza!=-1):
+            bins051.append(pixels[l].nhit+pixels[l+1].nhit)
+    #grafici dei risultati non ottimizzati di volta in volta 
+    fig,ax = plt.subplots(1,2, figsize=(12,6) )
+
+    ax[0].plot(appoggio, bins05, 'o', color='blue')
+    ax[1].plot(m/uma, bins051, '*',  color='red'  )
+
+    ax[0].set_title('Pixel colpiti in generale')
+    ax[1].set_title('Pixel relativi alle masse colpiti')
+
+    ax[0].set_xlabel('Pixel')
+    ax[0].set_ylabel('Numero di hit')
+
+    ax[1].set_xlabel('Masse')
+    ax[1].set_ylabel('Numero di hit')
+    
+    plt.show()
+    
+    for s in range(len(pixels)):
+        pixels[s].nhit=0
+        pixels[s].hit= False
+
+
+
 
 #generazione degli array di masse con probabilità definite per fare i test richiesti dalla consegna 1 
 
@@ -136,25 +184,26 @@ bins1=[]
 for i in range(len(pixels)-1):
     if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].appartenenza!=-1):
         bins1.append(pixels[i].nhit+pixels[i+1].nhit)
-print(bins1)
-print(len(m),len(bins1))
-#for i in range(len(pixels)):
- #   print(pixels[i].appartenenza, pixels[i].nhit, pixels[i].hit)
+plt.plot(m/uma,bins1,'*',color='orange')
+plt.show()
+
 #reset della conta del numero degli "hit" e della variabile "hit" che verifica, come spiegato nell'altro file, se un pixel viene colpito o meno 
 
 for i in range(len(pixels)):
     pixels[i].nhit=0
     pixels[i].hit= False
 
+    
+
 #generazione degli array di masse con probabilità definite per fare i test richiesti dalla consegna 2 
 probgen2=np.zeros(len(m))
-probgen2[196]=0.0015
-probgen2[198]=0.0985
-probgen2[199]=0.169
-probgen2[200]=0.231
-probgen2[201]=0.132
-probgen2[202]=0.299
-probgen2[204]=0.069
+probgen2[195]=0.0015
+probgen2[197]=0.0985
+probgen2[198]=0.169
+probgen2[199]=0.231
+probgen2[200]=0.132
+probgen2[201]=0.299
+probgen2[203]=0.069
 mtest2=np.random.choice(m,10000,p=probgen2)
 partenze2=np.random.uniform(-A2/2,A2/2,len(mtest2))
 raggi2=np.zeros(len(mtest2))
@@ -170,8 +219,25 @@ bins2=[]
 for i in range(len(pixels)-1):
     if (pixels[i].appartenenza==pixels[i+1].appartenenza)&(pixels[i].appartenenza!=-1):
         bins2.append(pixels[i].nhit+pixels[i+1].nhit)
-print(bins2)
-print(len(m),len(bins2))
 
-#for i in range(len(pixels)):
- #   print(pixels[i].appartenenza, pixels[i].nhit, pixels[i].hit)
+plt.plot(m/uma,bins2,'*',color='limegreen')
+plt.show()
+
+abbis23=bins1[22]
+abbis35=bins1[34]
+abbis37=bins1[36]
+
+abbis196=bins2[195]
+abbis198=bins2[197]
+abbis199=bins2[198]
+abbis200=bins2[199]
+abbis201=bins2[200]
+abbis202=bins2[201]
+abbis204=bins2[203]
+
+print(abbis23,abbis35,abbis37,abbis196,abbis198,abbis199,abbis200,abbis201,abbis202,abbis204)
+
+file_scrittura=open("Risultati.txt","w")
+
+file_scrittura.write()
+file_scrittura.close()
